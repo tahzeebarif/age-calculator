@@ -1,231 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Age Calculator</title>
-<link rel="stylesheet" href="style.css">
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        purpleCustom: "#854dff",
-                        offWhite: "#f0f0f0",
-                        lightGrey: "#dbdbdb"
-                    }
-                }
-            }
-        }
-    </script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            purpleCustom: "#854dff",
+            offWhite: "#eeeeee",
+            lightGrey: "#dbdbdb",
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+    @media (max-width: 400px) { .result-text { font-size: 2rem !important; } }
+  </style>
 </head>
+<body class="bg-offWhite flex justify-center items-center min-h-screen font-sans p-4 overflow-hidden relative">
 
+  <!-- ░░ BACKGROUND DECORATIONS ░░ -->
 
-<body class="bg-offWhite flex justify-center items-center h-screen font-sans">
- <div 
-    class="flex justify-center items-center w-[960px] h-[550px] p-16 rounded-1xl"
+  <!-- LEFT SIDE: Big lavender curved blob -->
+  <div class="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none select-none" style="z-index:0;">
+    <svg width="160" height="420" viewBox="0 0 160 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-30 60 C20 0, 100 20, 130 100 C160 180, 150 260, 120 330 C90 400, 20 440, -30 380 Z"
+            fill="#c4b5fd" opacity="0.35"/>
+    </svg>
+  </div>
+
+  <!-- TOP-LEFT: purple quote marks -->
+  <div class="absolute top-6 left-1/4 text-purple-300 text-7xl font-black opacity-50 leading-none select-none pointer-events-none"
+       style="font-family:Georgia,serif; z-index:0;">&rdquo;&rdquo;</div>
+
+  <!-- TOP-RIGHT: teal dot grid -->
+  <div class="absolute top-8 right-8 grid grid-cols-3 gap-2 opacity-40 pointer-events-none" style="z-index:0;">
+    <div class="w-3 h-3 bg-teal-300 rounded-full"></div><div class="w-3 h-3 bg-teal-300 rounded-full"></div><div class="w-3 h-3 bg-teal-300 rounded-full"></div>
+    <div class="w-3 h-3 bg-teal-300 rounded-full"></div><div class="w-3 h-3 bg-teal-300 rounded-full"></div><div class="w-3 h-3 bg-teal-300 rounded-full"></div>
+    <div class="w-3 h-3 bg-teal-300 rounded-full"></div><div class="w-3 h-3 bg-teal-300 rounded-full"></div><div class="w-3 h-3 bg-teal-300 rounded-full"></div>
+  </div>
+
+  <!-- RIGHT-MIDDLE: teal horizontal lines -->
+  <div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-40 pointer-events-none" style="z-index:0;">
+    <div class="w-8 h-0.5 bg-teal-400 rounded-full"></div>
+    <div class="w-8 h-0.5 bg-teal-400 rounded-full"></div>
+    <div class="w-8 h-0.5 bg-teal-400 rounded-full"></div>
+    <div class="w-8 h-0.5 bg-teal-400 rounded-full"></div>
+    <div class="w-8 h-0.5 bg-teal-400 rounded-full"></div>
+  </div>
+
+  <!-- LEFT-MIDDLE: pink chevron -->
+  <div class="absolute left-4 top-1/2 -translate-y-1/2 opacity-60 pointer-events-none" style="z-index:1;">
+    <svg width="32" height="40" viewBox="0 0 24 30" fill="none" stroke="#f9a8d4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="7 24 17 15 7 6"></polyline>
+    </svg>
+  </div>
+
+  <!-- BOTTOM-LEFT: pink zigzag -->
+  <div class="absolute bottom-8 left-1/4 opacity-50 pointer-events-none" style="z-index:0;">
+    <svg width="90" height="22" viewBox="0 0 90 22" fill="none" stroke="#f9a8d4" stroke-width="2.5" stroke-linecap="round">
+      <polyline points="0,18 12,4 24,18 36,4 48,18 60,4 72,18 84,4"/>
+    </svg>
+  </div>
+
+  <!-- BOTTOM-RIGHT: pink double zigzag -->
+  <div class="absolute bottom-6 right-10 opacity-50 pointer-events-none" style="z-index:0;">
+    <svg width="90" height="30" viewBox="0 0 90 30" fill="none" stroke="#f9a8d4" stroke-width="2.5" stroke-linecap="round">
+      <polyline points="0,24 12,10 24,24 36,10 48,24 60,10 72,24 84,10"/>
+      <polyline points="0,16 12,2 24,16 36,2 48,16 60,2 72,16 84,2"/>
+    </svg>
+  </div>
+
+  <!-- ░░ MAIN CARD ░░ -->
+   <div 
+    class="flex justify-center items-center w-[960px] h-[550px] p-16 rounded-2xl"
     style="box-shadow: 
-        10px 0 15px -3px rgba(66, 64, 64, 0.3),   /* right */
-        -10px 0 15px -3px rgba(92, 88, 88, 0.3),  /* left */
-        0 8px 15px -5px rgba(143, 138, 138, 0.3);"   
+        10px 0 15px -3px rgba(77, 72, 72, 0.3),   /* right */
+        -10px 0 15px -3px rgba(73, 69, 69, 0.3),  /* left */
+        0 8px 15px -5px rgba(71, 69, 69, 0.3);"   /* bottom */
 >
  
-  
+<div style="border-radius: 24px 24px 200px 24px; min-height: 420px;" 
+     class="relative z-10 w-full max-w-2xl sm:max-w-3xl md:max-w-4xl bg-white shadow-xl p-8 sm:p-10 md:p-14 flex items-center">
+    
 
- 
+      <!-- LEFT: Form + Result -->
+      <div class="w-full md:w-1/2">
 
-    <div class="bg-white p-12 w-[500px] rounded-[20px_20px_100px_20px] shadow-lg">
+        <!-- Inputs Row -->
+        <div class="flex gap-3 sm:gap-4 md:gap-5 mb-5">
 
-        <!-- Inputs -->
-        <div class="flex gap-5 mb-5">
+          <!-- DAY -->
+          <div class="flex-1">
+            <label id="day-label" class="block text-gray-400 text-[10px] sm:text-xs tracking-widest font-bold mb-1">DAY</label>
+            <input type="number" id="day" placeholder="DD" min="1" max="31"
+              class="w-full p-2 sm:p-2.5 text-lg sm:text-xl font-extrabold border border-lightGrey rounded-lg focus:outline-none focus:border-purpleCustom transition">
+            <p id="day-error" class="text-red-500 text-[10px] sm:text-xs mt-1 hidden">Must be valid day</p>
+          </div>
 
-    <!-- DAY -->
-    <div>
-        <label id="day-label"
-            class="block text-[#716f6f] text-xs tracking-[2px] font-bold mb-1">
-            DAY
-        </label>
+          <!-- MONTH -->
+          <div class="flex-1">
+            <label id="month-label" class="block text-gray-400 text-[10px] sm:text-xs tracking-widest font-bold mb-1">MONTH</label>
+            <input type="number" id="month" placeholder="MM" min="1" max="12"
+              class="w-full p-2 sm:p-2.5 text-lg sm:text-xl font-extrabold border border-lightGrey rounded-lg focus:outline-none focus:border-purpleCustom transition">
+            <p id="month-error" class="text-red-500 text-[10px] sm:text-xs mt-1 hidden">Must be valid month</p>
+          </div>
 
-        <input type="number" id="day" placeholder="DD" min="1" max="31"
-            class="w-20 p-2 text-xl font-extrabold border border-lightGrey rounded-md focus:outline-none focus:border-purpleCustom">
+          <!-- YEAR -->
+          <div class="flex-1">
+            <label id="year-label" class="block text-gray-400 text-[10px] sm:text-xs tracking-widest font-bold mb-1">YEAR</label>
+            <input type="number" id="year" placeholder="YYYY" min="1900" max="2025"
+              class="w-full p-2 sm:p-2.5 text-lg sm:text-xl font-extrabold border border-lightGrey rounded-lg focus:outline-none focus:border-purpleCustom transition">
+            <p id="year-error" class="text-red-500 text-[10px] sm:text-xs mt-1 hidden">Must be in the past</p>
+          </div>
+        </div>
 
-        <p class="text-red-500 text-xs mt-1 hidden" id="day-error">
-            Must be valid day
-        </p>
-    </div>
-
-    <!-- MONTH -->
-    <div>
-        <label id="month-label"
-            class="block text-[#716f6f] text-xs tracking-[2px] font-bold mb-1">
-            MONTH
-        </label>
-
-        <input type="number" id="month" placeholder="MM" min="1" max="12"
-            class="w-20 p-2 text-xl font-extrabold border border-lightGrey rounded-md focus:outline-none focus:border-purpleCustom">
-
-        <p class="text-red-500 text-xs mt-1 hidden" id="month-error">
-            Must be valid month
-        </p>
-    </div>
-
-    <!-- YEAR -->
-    <div>
-        <label id="year-label"
-            class="block text-[#716f6f] text-xs tracking-[2px] font-bold mb-1">
-            YEAR
-        </label>
-
-        <input type="number" id="year" placeholder="YYYY" min="1900" max="2025"
-            class="w-20 p-2 text-xl font-extrabold border border-lightGrey rounded-md focus:outline-none focus:border-purpleCustom">
-    </div>
-
-</div>
-        <!-- Line + Button -->
-        <div class="relative flex items-center my-8">
-
-            <!-- Line -->
-            <div class="flex-grow border-t-2 border-lightGrey"></div>
-
-            <!-- Button -->
-            <button type="button" onclick="calculateAge()"
-    class="absolute right-0 bg-purpleCustom hover:bg-purple-700 w-14 h-14 flex items-center justify-center rounded-full shadow-lg transition">
-    <img src="assets/images/icon-arrow.svg" width="20">
+        <!-- Divider + Button -->
+        <div class="relative flex items-center my-6 sm:my-8">
+          <div class="flex-grow border-t-2 border-lightGrey"></div>
+         <button type="button" onclick="calculateAge()"
+    class="absolute right-0 top-1/2 -translate-y-1/2 bg-purpleCustom hover:bg-purple-700 active:scale-95
+           w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full shadow-lg transition-all duration-200">
+    <img src="assets/images/icon-arrow.svg" alt="arrow" class="w-5 h-5 sm:w-6 sm:h-6">
 </button>
-
         </div>
 
         <!-- Result -->
-        <div class="mt-10 space-y-2">
-            <div class="text-[50px] font-extrabold italic leading-tight">
-                <span class="text-purpleCustom" id="out-years">--</span> years
-            </div>
-            <div class="text-[50px] font-extrabold italic leading-tight">
-                <span class="text-purpleCustom" id="out-months">--</span> months
-            </div>
-            <div class="text-[50px] font-extrabold italic leading-tight">
-                <span class="text-purpleCustom" id="out-days">--</span> days
-            </div>
+        <div class="mt-2 space-y-1 sm:space-y-2">
+          <div class="result-text text-4xl sm:text-5xl font-extrabold italic leading-tight">
+            <span class="text-purpleCustom" id="out-years">--</span> years
+          </div>
+          <div class="result-text text-4xl sm:text-5xl font-extrabold italic leading-tight">
+            <span class="text-purpleCustom" id="out-months">--</span> months
+          </div>
+          <div class="result-text text-4xl sm:text-5xl font-extrabold italic leading-tight">
+            <span class="text-purpleCustom" id="out-days">--</span> days
+          </div>
         </div>
 
-    </div>
-    </div> 
-    <div class="absolute top-10 left-1/2 -translate-x-1/2 text-purple-300 text-6xl font-bold opacity-40">
-    “”
+      </div><!-- END LEFT -->
+
+      
+
+    </div><!-- END FLEX ROW -->
+  </div>
 </div>
+  <!-- END MAIN CARD -->
 
-  
-<div class="absolute right-10 top-1/3 grid grid-cols-3 gap-2 opacity-40">
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-    <div class="w-3 h-3 bg-teal-300 rounded-full"></div>
-</div>
+  <script>
+    function calculateAge() {
+      const dayInput   = document.getElementById('day');
+      const monthInput = document.getElementById('month');
+      const yearInput  = document.getElementById('year');
 
-  
-<div class="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-40">
-    <div class="flex gap-2">
-        <div class="w-4 h-1 bg-pink-300 rotate-45"></div>
-        <div class="w-4 h-1 bg-pink-300 -rotate-45"></div>
-        <div class="w-4 h-1 bg-pink-300 rotate-45"></div>
-        <div class="w-4 h-1 bg-pink-300 -rotate-45"></div>
-        <div class="w-4 h-1 bg-pink-300 rotate-45"></div>
-    </div>
-</div>
+      const day   = parseInt(dayInput.value);
+      const month = parseInt(monthInput.value);
+      const year  = parseInt(yearInput.value);
 
-<script>
-function calculateAge() {
+      const dayError   = document.getElementById('day-error');
+      const monthError = document.getElementById('month-error');
+      const yearError  = document.getElementById('year-error');
+      const dayLabel   = document.getElementById('day-label');
+      const monthLabel = document.getElementById('month-label');
+      const yearLabel  = document.getElementById('year-label');
 
-    const dayInput = document.getElementById('day');
-    const monthInput = document.getElementById('month');
-    const yearInput = document.getElementById('year');
+      [dayError, monthError, yearError].forEach(e => e.classList.add("hidden"));
+      [dayInput, monthInput, yearInput].forEach(i => i.classList.remove("border-red-500"));
+      [dayLabel, monthLabel, yearLabel].forEach(l => l.classList.remove("text-red-500"));
 
-    const day = parseInt(dayInput.value);
-    const month = parseInt(monthInput.value);
-    const year = parseInt(yearInput.value);
+      let hasError = false;
 
-    const dayError = document.getElementById('day-error');
-    const monthError = document.getElementById('month-error');
-
-    const dayLabel = document.getElementById('day-label');
-    const monthLabel = document.getElementById('month-label');
-
-    // RESET ERRORS
-    dayError.classList.add("hidden");
-    monthError.classList.add("hidden");
-
-    dayInput.classList.remove("border-red-500");
-    monthInput.classList.remove("border-red-500");
-
-    dayLabel.classList.remove("text-red-500");
-    monthLabel.classList.remove("text-red-500");
-
-    let hasError = false;
-
-    // VALIDATION
-    if (isNaN(day) || day < 1 || day > 31) {
+      if (isNaN(day) || day < 1 || day > 31) {
         dayError.classList.remove("hidden");
         dayInput.classList.add("border-red-500");
         dayLabel.classList.add("text-red-500");
         hasError = true;
-    }
-
-    if (isNaN(month) || month < 1 || month > 12) {
+      }
+      if (isNaN(month) || month < 1 || month > 12) {
         monthError.classList.remove("hidden");
         monthInput.classList.add("border-red-500");
         monthLabel.classList.add("text-red-500");
         hasError = true;
-    }
-
-    const today = new Date();
-
-    if (isNaN(year) || year > today.getFullYear()) {
-        hasError = true;
+      }
+      const today = new Date();
+      if (isNaN(year) || year > today.getFullYear()) {
+        yearError.classList.remove("hidden");
         yearInput.classList.add("border-red-500");
-    } else {
-        yearInput.classList.remove("border-red-500");
-    }
+        yearLabel.classList.add("text-red-500");
+        hasError = true;
+      }
+      if (hasError) return;
 
-    if (hasError) return;
+      let birthDate   = new Date(year, month - 1, day);
+      let currentDate = new Date();
 
-    // ==========================
-    // AGE CALCULATION LOGIC
-    // ==========================
+      let years  = currentDate.getFullYear() - birthDate.getFullYear();
+      let months = currentDate.getMonth()    - birthDate.getMonth();
+      let days   = currentDate.getDate()     - birthDate.getDate();
 
-    let birthDate = new Date(year, month - 1, day);
-
-    let currentDate = new Date();
-
-    let years = currentDate.getFullYear() - birthDate.getFullYear();
-    let months = currentDate.getMonth() - birthDate.getMonth();
-    let days = currentDate.getDate() - birthDate.getDate();
-
-    if (days < 0) {
+      if (days < 0) {
         months--;
         let prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
         days += prevMonth.getDate();
+      }
+      if (months < 0) { years--; months += 12; }
+
+      document.getElementById('out-years').textContent  = years;
+      document.getElementById('out-months').textContent = months;
+      document.getElementById('out-days').textContent   = days;
     }
 
-    if (months < 0) {
-        years--;
-        months += 12;
-    }
-
-    // OUTPUT UPDATE
-    document.getElementById('out-years').innerHTML = years;
-    document.getElementById('out-months').innerHTML = months;
-    document.getElementById('out-days').innerHTML = days;
-}
-</script>
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') calculateAge(); });
+  </script>
 </body>
 </html>
